@@ -161,39 +161,145 @@
         <h2 class="text-4xl font-bold mb-16 text-center text-primary">BOOK YOUR SESSION</h2>
         <div class="max-w-2xl mx-auto">
             <form id="booking-form" class="border-secondary p-8 rounded-lg">
-                <div class="mb-6">
-                    <input type="text" class="input-field" placeholder="Your Name" required>
+                <p class="text-gray-700 mb-8">Describe your session and we will create it for you.</p>
+
+                <div class="grid md:grid-cols-2 gap-6">
+                    <div>
+                        <label for="first-name" class="block text-sm font-medium text-secondary mb-2">First Name*</label>
+                        <input id="first-name" name="first-name" type="text" class="input-field" placeholder="First Name" required>
+                    </div>
+                    <div>
+                        <label for="last-name" class="block text-sm font-medium text-secondary mb-2">Last Name*</label>
+                        <input id="last-name" name="last-name" type="text" class="input-field" placeholder="Last Name" required>
+                    </div>
                 </div>
+
                 <div class="mb-6">
-                    <input type="email" class="input-field" placeholder="Your Email" required>
+                    <label for="email" class="block text-sm font-medium text-secondary mb-2">E-mail*</label>
+                    <input id="email" name="email" type="email" class="input-field" placeholder="example@example.com" required>
                 </div>
+
                 <div class="mb-6">
-                    <input type="tel" class="input-field" placeholder="Your Phone Number" required>
+                    <label for="phone" class="block text-sm font-medium text-secondary mb-2">Your Contact Number*</label>
+                    <input id="phone" name="phone" type="tel" class="input-field" placeholder="000-000-0000" required>
                 </div>
+
+                <div class="mb-8">
+                    <span class="block text-sm font-medium text-secondary mb-2">Preferred Contact Method*</span>
+                    <div class="flex flex-wrap gap-6 text-gray-700">
+                        <label class="flex items-center space-x-2">
+                            <input type="radio" name="contact-method" value="text" required>
+                            <span>Text</span>
+                        </label>
+                        <label class="flex items-center space-x-2">
+                            <input type="radio" name="contact-method" value="email">
+                            <span>Email</span>
+                        </label>
+                    </div>
+                </div>
+
+                <div class="grid md:grid-cols-2 gap-6">
+                    <div>
+                        <label for="session-date" class="block text-sm font-medium text-secondary mb-2">Desired Session Date*</label>
+                        <input id="session-date" name="session-date" type="date" class="input-field" required>
+                    </div>
+                    <div>
+                        <label for="session-time" class="block text-sm font-medium text-secondary mb-2">Desired Session Time*</label>
+                        <input id="session-time" name="session-time" type="time" class="input-field" required>
+                    </div>
+                </div>
+                <p class="text-sm text-gray-600 italic mb-6">Please note: We book shoots 7 days a week, mornings to late afternoons, with only one client per day so you receive our full attention.</p>
+
                 <div class="mb-6">
-                    <select class="input-field" required>
-                        <option value="" disabled selected>Session Type</option>
-                        <option value="senior">Senior Portraits - $300</option>
-                        <option value="family">Family Portraits - $350</option>
-                        <option value="couples">Couples/Engagement - $400</option>
-                        <option value="maternity">Maternity - $350</option>
-                        <option value="newborn">Newborn - $300</option>
-                        <option value="event">Events - $500</option>
-                        <option value="commercial">Commercial - $750</option>
-                    </select>
+                    <span class="block text-sm font-medium text-secondary mb-2">Have you picked a package prior to filling out this form?*</span>
+                    <div class="space-y-3 text-gray-700">
+                        <label class="flex items-start space-x-2">
+                            <input type="radio" name="package-picked" value="yes" required>
+                            <span>Yes. Continue with the form submission.</span>
+                        </label>
+                        <label class="flex items-start space-x-2">
+                            <input type="radio" name="package-picked" value="no">
+                            <span>No. Please stop and contact Grandadare Photography to pick a package and confirm a session date.<br>409-338-9099 / 832-324-5904 / grandadare@gmail.com</span>
+                        </label>
+                    </div>
                 </div>
+
                 <div class="mb-6">
-                    <input type="date" class="input-field" required>
+                    <label for="package" class="block text-sm font-medium text-secondary mb-2">Which Package?</label>
+                    <input id="package" name="package" type="text" class="input-field" placeholder="Ex. Collection 2">
                 </div>
+
                 <div class="mb-6">
-                    <textarea class="input-field" rows="4" placeholder="Special Requests or Notes" required></textarea>
+                    <label for="session-theme" class="block text-sm font-medium text-secondary mb-2">Session Theme</label>
+                    <input id="session-theme" name="session-theme" type="text" class="input-field" placeholder="Describe your theme">
                 </div>
+
+                <div class="mb-6">
+                    <label for="session-size" class="block text-sm font-medium text-secondary mb-2">Number of People in Session</label>
+                    <input id="session-size" name="session-size" type="number" min="1" class="input-field" placeholder="Enter number of participants">
+                </div>
+
+                <div class="mb-6">
+                    <label for="consultation" class="block text-sm font-medium text-secondary mb-2">Schedule a Consultation</label>
+                    <input id="consultation" name="consultation" type="text" class="input-field" placeholder="Best date and time">
+                </div>
+
+                <div class="mb-6">
+                    <label for="session-location" class="block text-sm font-medium text-secondary mb-2">Session Location (place)</label>
+                    <input id="session-location" name="session-location" type="text" class="input-field" placeholder="Type n/a if you are not sure">
+                </div>
+
                 <div class="mb-6">
                     <label for="inspiration-image" class="block text-sm font-medium text-secondary mb-2">Upload Inspiration Image (optional)</label>
                     <input type="file" id="inspiration-image" name="inspiration-image" accept="image/*" class="file-input">
                     <p class="text-sm text-gray-600 mt-2">Max 20 MB. Share a photo that captures your vision.</p>
                     <p id="file-error" class="text-sm text-red-600 mt-2 hidden">File exceeds 20 MB limit. Please choose a smaller image.</p>
                 </div>
+
+                <div class="mb-6">
+                    <label for="special-notes" class="block text-sm font-medium text-secondary mb-2">Special Request / Additional Note to Photographer</label>
+                    <textarea id="special-notes" name="special-notes" class="input-field" rows="4" placeholder="Type here..." required></textarea>
+                </div>
+
+                <div class="mb-8">
+                    <h3 class="text-lg font-semibold text-primary mb-4">Client Portrait Agreement/Contract/Waiver & Copyright Acknowledgment</h3>
+                    <div class="p-4 rounded-lg" style="background-color: rgba(245, 245, 220, 0.2); border: 1px solid rgba(85, 107, 47, 0.4);">
+                        <div class="mb-6 text-sm text-gray-700 leading-relaxed">
+                            <p class="mb-3">PORTRAIT AGREEMENT & MODEL RELEASE: I have read and agree to the following statement: I commission Grandadare Photography, the photographer, to photograph myself and/or my underage children. I hereby grant Grandadare Photography and her legal representatives and assigns, the irrevocable and unrestricted right to use and publish photographs of myself, family, and/or child(ren), or in which myself, family, and/or children will be included for editorial, trade, advertising, and any other purpose and in any manner or medium; to alter the same without restriction; and to copyright the same. I hereby release Grandadare Photography and her legal representatives and assigns from all claims and liability relating to said photographs.</p>
+                            <div class="flex flex-wrap gap-4">
+                                <label class="flex items-center space-x-2">
+                                    <input type="radio" name="portrait-agreement" value="agree" required>
+                                    <span>I Agree</span>
+                                </label>
+                                <label class="flex items-center space-x-2">
+                                    <input type="radio" name="portrait-agreement" value="do-not-agree">
+                                    <span>I DO NOT Agree</span>
+                                </label>
+                            </div>
+                        </div>
+                        <div class="mb-6 text-sm text-gray-700 leading-relaxed">
+                            <p class="mb-3">COPYRIGHT: As a client of Grandadare Photography, I acknowledge and understand that the images taken by Grandadare, PHOTOGRAPHER; D. Jenkins, are protected by Federal Copyright Laws. I understand it is ILLEGAL to copy or reproduce these photographs elsewhere without the PHOTOGRAPHER's permission, and violators of this Federal Law will be subject to its civil and criminal penalties. A limited PRINT RELEASE is supplied with the purchase of my session digital files to print your portraits for your own personal use. The print release does not allow publication of your portraits (i.e. entering in contests), selling or altering your images without the PHOTOGRAPHER's permission.</p>
+                            <div class="flex flex-wrap gap-4">
+                                <label class="flex items-center space-x-2">
+                                    <input type="radio" name="copyright-agreement" value="agree" required>
+                                    <span>I Agree</span>
+                                </label>
+                                <label class="flex items-center space-x-2">
+                                    <input type="radio" name="copyright-agreement" value="do-not-agree">
+                                    <span>I DO NOT Agree</span>
+                                </label>
+                            </div>
+                        </div>
+                        <div class="text-sm text-gray-700 leading-relaxed">
+                            <p class="mb-3">By signing below you certify that you are a parent or guardian or at least 18 years of age. You have read this portrait agreement/contract and fully understand the contents thereof. You agree that you have the legal authority to grant these permissions and accept all responsibility for such.</p>
+                            <label class="flex items-center space-x-2">
+                                <input type="checkbox" name="adult-confirmation" value="yes" required>
+                                <span>I acknowledge and agree.</span>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+
                 <button type="submit" class="submit-btn font-bold w-full">PROCEED TO PAYMENT</button>
             </form>
         </div>
