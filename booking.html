@@ -57,7 +57,7 @@
             background: transparent;
             border: none;
             border-bottom: 2px solid var(--secondary-color);
-            color: var(--light-text);
+            color: var(--dark-text);
             padding: 10px 0;
             margin-bottom: 20px;
             width: 100%;
@@ -66,6 +66,21 @@
         }
         .input-field:focus {
             border-bottom-color: var(--primary-color);
+        }
+        .input-field::placeholder {
+            color: rgba(51, 51, 51, 0.7);
+        }
+        .file-input {
+            width: 100%;
+            padding: 12px;
+            border: 2px dashed var(--secondary-color);
+            border-radius: 8px;
+            background-color: rgba(85, 107, 47, 0.05);
+            color: var(--dark-text);
+        }
+        .file-input:focus {
+            outline: none;
+            border-color: var(--primary-color);
         }
         .submit-btn {
             background-color: var(--primary-color);
@@ -173,6 +188,12 @@
                 <div class="mb-6">
                     <textarea class="input-field" rows="4" placeholder="Special Requests or Notes" required></textarea>
                 </div>
+                <div class="mb-6">
+                    <label for="inspiration-image" class="block text-sm font-medium text-secondary mb-2">Upload Inspiration Image (optional)</label>
+                    <input type="file" id="inspiration-image" name="inspiration-image" accept="image/*" class="file-input">
+                    <p class="text-sm text-gray-600 mt-2">Max 20 MB. Share a photo that captures your vision.</p>
+                    <p id="file-error" class="text-sm text-red-600 mt-2 hidden">File exceeds 20 MB limit. Please choose a smaller image.</p>
+                </div>
                 <button type="submit" class="submit-btn font-bold w-full">PROCEED TO PAYMENT</button>
             </form>
         </div>
@@ -208,15 +229,44 @@
         });
 
         // Booking form handling
-        document.getElementById('booking-form').addEventListener('submit', function(e) {
-            e.preventDefault();
-            // Here you would typically send the form data to your server
-            // and then redirect to Stripe Checkout or handle payment
-            alert('Booking request received! You will be redirected to payment shortly.');
-            // For now, we'll just simulate a redirect to a payment page
-            // In a real scenario, you'd use Stripe.js to create a payment intent
-            window.location.href = 'https://buy.stripe.com/test_00g14odgW2DefiU144'; // Example Stripe test link
-        });
+        const bookingForm = document.getElementById('booking-form');
+        const fileInput = document.getElementById('inspiration-image');
+        const fileError = document.getElementById('file-error');
+        const MAX_FILE_SIZE = 20 * 1024 * 1024; // 20 MB limit
+
+        if (fileInput) {
+            fileInput.addEventListener('change', () => {
+                if (fileError) {
+                    fileError.classList.add('hidden');
+                }
+                const file = fileInput.files[0];
+                if (file && file.size > MAX_FILE_SIZE) {
+                    if (fileError) {
+                        fileError.classList.remove('hidden');
+                    }
+                    fileInput.value = '';
+                }
+            });
+        }
+
+        if (bookingForm) {
+            bookingForm.addEventListener('submit', function(e) {
+                if (fileInput && fileInput.files[0] && fileInput.files[0].size > MAX_FILE_SIZE) {
+                    e.preventDefault();
+                    if (fileError) {
+                        fileError.classList.remove('hidden');
+                    }
+                    return;
+                }
+                e.preventDefault();
+                // Here you would typically send the form data to your server
+                // and then redirect to Stripe Checkout or handle payment
+                alert('Booking request received! You will be redirected to payment shortly.');
+                // For now, we'll just simulate a redirect to a payment page
+                // In a real scenario, you'd use Stripe.js to create a payment intent
+                window.location.href = 'https://buy.stripe.com/test_00g14odgW2DefiU144'; // Example Stripe test link
+            });
+        }
     </script>
 </body>
 </html>
