@@ -1,378 +1,360 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Grandadare | Book Your Session</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <script src="https://js.stripe.com/v3/"></script>
-    <style>
-        @import url('https://fonts.googleapis.com/css2?family=Lora:wght@400;500;700&family=Roboto:wght@300;400;500&display=swap');
-        :root {
-            --primary-color: #c5a880;
-            --secondary-color: #556b2f;
-            --accent-color: #a0522d;
-            --dark-bg: #2d2a26;
-            --light-text: #f5f5dc;
-            --light-bg: #f8f8f8;
-            --dark-text: #333333;
-        }
-        body {
-            font-family: 'Roboto', sans-serif;
-            background-color: var(--light-bg);
-            color: var(--dark-text);
-            overflow-x: hidden;
-        }
-        h1, h2, h3, h4, .nav-item {
-            font-family: 'Lora', serif;
-        }
-        .text-primary {
-            color: var(--primary-color);
-        }
-        .text-secondary {
-            color: var(--secondary-color);
-        }
-        .text-accent {
-            color: var(--accent-color);
-        }
-        .border-primary {
-            border: 2px solid var(--primary-color);
-        }
-        .border-secondary {
-            border: 2px solid var(--secondary-color);
-        }
-        .nav-item:hover {
-            color: var(--primary-color);
-        }
-        .profile-circle {
-            border: 3px solid var(--primary-color);
-            box-shadow: 0 0 15px rgba(197, 168, 128, 0.3);
-        }
-        .testimonial-card {
-            background: rgba(0, 0, 0, 0.2);
-            border-top: 3px solid var(--primary-color);
-        }
-        .input-field {
-            background: transparent;
-            border: none;
-            border-bottom: 2px solid var(--secondary-color);
-            color: var(--dark-text);
-            padding: 10px 0;
-            margin-bottom: 20px;
-            width: 100%;
-            outline: none;
-            transition: border-bottom-color 0.3s;
-        }
-        .input-field:focus {
-            border-bottom-color: var(--primary-color);
-        }
-        .input-field::placeholder {
-            color: rgba(51, 51, 51, 0.7);
-        }
-        .file-input {
-            width: 100%;
-            padding: 12px;
-            border: 2px dashed var(--secondary-color);
-            border-radius: 8px;
-            background-color: rgba(85, 107, 47, 0.05);
-            color: var(--dark-text);
-        }
-        .file-input:focus {
-            outline: none;
-            border-color: var(--primary-color);
-        }
-        .submit-btn {
-            background-color: var(--primary-color);
-            border: none;
-            padding: 12px 30px;
-            color: var(--dark-bg);
-            font-weight: bold;
-            cursor: pointer;
-            transition: all 0.3s;
-        }
-        .submit-btn:hover {
-            background-color: var(--accent-color);
-            color: var(--light-text);
-            transform: translateY(-2px);
-        }
-        .social-icon {
-            width: 50px;
-            height: 50px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            border-radius: 50%;
-            font-size: 20px;
-            transition: all 0.3s;
-            margin: 0 10px;
-            border: 2px solid var(--secondary-color);
-            color: var(--secondary-color);
-        }
-        .social-icon:hover {
-            transform: translateY(-5px) scale(1.1);
-            background-color: var(--secondary-color);
-            color: var(--light-text);
-        }
-        .instagram, .facebook, .linkedin {
-            background: transparent;
-        }
-        .star {
-            color: var(--primary-color);
-        }
-    </style>
-</head>
-<body>
-    <!-- Navigation -->
-    <nav class="fixed w-full z-50 bg-black bg-opacity-80 backdrop-filter backdrop-blur-md">
-        <div class="container mx-auto px-6 py-4">
-            <div class="flex justify-between items-center">
-                <div class="text-2xl font-bold text-primary">Grandadare</div>
-                <div class="hidden md:flex space-x-8">
-                    <a href="index.html#home" class="nav-item text-white transition duration-300">Home</a>
-                    <a href="index.html#gallery" class="nav-item text-white transition duration-300">Gallery</a>
-                    <a href="index.html#about" class="nav-item text-white transition duration-300">About</a>
-                    <a href="index.html#testimonials" class="nav-item text-white transition duration-300">Testimonials</a>
-                    <a href="index.html#contact" class="nav-item text-white transition duration-300">Contact</a>
-                    <a href="faq.html" class="nav-item text-white transition duration-300">FAQ</a>
-                </div>
-                <div class="md:hidden">
-                    <button id="menu-btn" class="text-white focus:outline-none">
-                        <i class="fas fa-bars text-2xl"></i>
-                    </button>
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Grandadare | Book Your Session</title>
+        <script src="https://cdn.tailwindcss.com"></script>
+        <link
+            rel="stylesheet"
+            href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+        />
+        <script src="https://js.stripe.com/v3/"></script>
+        <style>
+            @import url("https://fonts.googleapis.com/css2?family=Lora:wght@400;500;700&family=Roboto:wght@300;400;500&display=swap");
+            :root {
+                --primary-color: #c5a880;
+                --secondary-color: #556b2f;
+                --accent-color: #a0522d;
+                --dark-bg: #2d2a26;
+                --light-text: #f5f5dc;
+                --light-bg: #f8f8f8;
+                --dark-text: #333333;
+            }
+            body {
+                font-family: "Roboto", sans-serif;
+                background-color: var(--light-bg);
+                color: var(--dark-text);
+                overflow-x: hidden;
+            }
+            h1,
+            h2,
+            h3,
+            h4,
+            .nav-item {
+                font-family: "Lora", serif;
+            }
+            .text-primary {
+                color: var(--primary-color);
+            }
+            .text-secondary {
+                color: var(--secondary-color);
+            }
+            .text-accent {
+                color: var(--accent-color);
+            }
+            .border-primary {
+                border: 2px solid var(--primary-color);
+            }
+            .border-secondary {
+                border: 2px solid var(--secondary-color);
+            }
+            .nav-item:hover {
+                color: var(--primary-color);
+            }
+            .profile-circle {
+                border: 3px solid var(--primary-color);
+                box-shadow: 0 0 15px rgba(197, 168, 128, 0.3);
+            }
+            .testimonial-card {
+                background: rgba(0, 0, 0, 0.2);
+                border-top: 3px solid var(--primary-color);
+            }
+            .input-field {
+                background: transparent;
+                border: none;
+                border-bottom: 2px solid var(--secondary-color);
+                color: var(--dark-text);
+                padding: 10px 0;
+                margin-bottom: 20px;
+                width: 100%;
+                outline: none;
+                transition: border-bottom-color 0.3s;
+            }
+            .input-field:focus {
+                border-bottom-color: var(--primary-color);
+            }
+            .input-field::placeholder {
+                color: rgba(51, 51, 51, 0.7);
+            }
+            .file-input {
+                width: 100%;
+                padding: 12px;
+                border: 2px dashed var(--secondary-color);
+                border-radius: 8px;
+                background-color: rgba(85, 107, 47, 0.05);
+                color: var(--dark-text);
+            }
+            .file-input:focus {
+                outline: none;
+                border-color: var(--primary-color);
+            }
+            .submit-btn {
+                background-color: var(--primary-color);
+                border: none;
+                padding: 12px 30px;
+                color: var(--dark-bg);
+                font-weight: bold;
+                cursor: pointer;
+                transition: all 0.3s;
+            }
+            .submit-btn:hover {
+                background-color: var(--accent-color);
+                color: var(--light-text);
+                transform: translateY(-2px);
+            }
+            .social-icon {
+                width: 50px;
+                height: 50px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                border-radius: 50%;
+                font-size: 20px;
+                transition: all 0.3s;
+                margin: 0 10px;
+                border: 2px solid var(--secondary-color);
+                color: var(--secondary-color);
+            }
+            .social-icon:hover {
+                transform: translateY(-5px) scale(1.1);
+                background-color: var(--secondary-color);
+                color: var(--light-text);
+            }
+            .instagram,
+            .facebook,
+            .linkedin {
+                background: transparent;
+            }
+            .star {
+                color: var(--primary-color);
+            }
+        </style>
+    </head>
+    <body>
+        <!-- Navigation -->
+        <nav
+            class="fixed w-full z-50 bg-black bg-opacity-80 backdrop-filter backdrop-blur-md"
+        >
+            <div class="container mx-auto px-6 py-4">
+                <div class="flex justify-between items-center">
+                    <div class="text-2xl font-bold text-primary">
+                        Grandadare
+                    </div>
+                    <div class="hidden md:flex space-x-8">
+                        <a
+                            href="index.html#home"
+                            class="nav-item text-white transition duration-300"
+                            >Home</a
+                        >
+                        <a
+                            href="index.html#gallery"
+                            class="nav-item text-white transition duration-300"
+                            >Gallery</a
+                        >
+                        <a
+                            href="index.html#about"
+                            class="nav-item text-white transition duration-300"
+                            >About</a
+                        >
+                        <a
+                            href="index.html#testimonials"
+                            class="nav-item text-white transition duration-300"
+                            >Testimonials</a
+                        >
+                        <a
+                            href="index.html#contact"
+                            class="nav-item text-white transition duration-300"
+                            >Contact</a
+                        >
+                        <a
+                            href="faq.html"
+                            class="nav-item text-white transition duration-300"
+                            >FAQ</a
+                        >
+                    </div>
+                    <div class="md:hidden">
+                        <button
+                            id="menu-btn"
+                            class="text-white focus:outline-none"
+                        >
+                            <i class="fas fa-bars text-2xl"></i>
+                        </button>
+                    </div>
                 </div>
             </div>
-        </div>
-        <!-- Mobile Menu -->
-        <div id="mobile-menu" class="hidden md:hidden bg-black bg-opacity-90 w-full px-6 py-4">
-            <div class="flex flex-col space-y-4">
-                <a href="index.html#home" class="nav-item text-white transition duration-300">Home</a>
-                <a href="index.html#gallery" class="nav-item text-white transition duration-300">Gallery</a>
-                <a href="index.html#about" class="nav-item text-white transition duration-300">About</a>
-                <a href="index.html#testimonials" class="nav-item text-white transition duration-300">Testimonials</a>
-                <a href="index.html#contact" class="nav-item text-white transition duration-300">Contact</a>
-                <a href="faq.html" class="nav-item text-white transition duration-300">FAQ</a>
+            <!-- Mobile Menu -->
+            <div
+                id="mobile-menu"
+                class="hidden md:hidden bg-black bg-opacity-90 w-full px-6 py-4"
+            >
+                <div class="flex flex-col space-y-4">
+                    <a
+                        href="index.html#home"
+                        class="nav-item text-white transition duration-300"
+                        >Home</a
+                    >
+                    <a
+                        href="index.html#gallery"
+                        class="nav-item text-white transition duration-300"
+                        >Gallery</a
+                    >
+                    <a
+                        href="index.html#about"
+                        class="nav-item text-white transition duration-300"
+                        >About</a
+                    >
+                    <a
+                        href="index.html#testimonials"
+                        class="nav-item text-white transition duration-300"
+                        >Testimonials</a
+                    >
+                    <a
+                        href="index.html#contact"
+                        class="nav-item text-white transition duration-300"
+                        >Contact</a
+                    >
+                    <a
+                        href="faq.html"
+                        class="nav-item text-white transition duration-300"
+                        >FAQ</a
+                    >
+                </div>
             </div>
-        </div>
-    </nav>
+        </nav>
 
-    <!-- Booking Section -->
-    <section class="py-20 px-6 container mx-auto mt-16">
-        <h2 class="text-4xl font-bold mb-16 text-center text-primary">BOOK YOUR SESSION</h2>
-        <div class="max-w-2xl mx-auto">
-            <form id="booking-form" class="border-secondary p-8 rounded-lg">
-                <p class="text-gray-700 mb-8">Describe your session and we will create it for you.</p>
+        <!-- Booking Section -->
+        <section class="py-20 px-6 container mx-auto mt-16">
+            <h2 class="text-4xl font-bold mb-16 text-center text-primary">
+                BOOK YOUR SESSION
+            </h2>
+            <div class="max-w-4xl mx-auto">
+                <p class="text-gray-700 mb-8 text-center">
+                    Select a package below to proceed with the payment. After
+                    the payment, you will be redirected to schedule your
+                    appointment.
+                </p>
 
-                <div class="grid md:grid-cols-2 gap-6">
-                    <div>
-                        <label for="first-name" class="block text-sm font-medium text-secondary mb-2">First Name*</label>
-                        <input id="first-name" name="first-name" type="text" class="input-field" placeholder="First Name" required>
+                <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+                    <!-- Package 1 -->
+                    <div class="border-secondary p-6 rounded-lg text-center">
+                        <h3 class="text-2xl font-bold text-secondary mb-4">
+                            Collection 1
+                        </h3>
+                        <a
+                            href="https://buy.stripe.com/bJecN5d9efHx7LQ3mR5Rm00"
+                            class="submit-btn inline-block"
+                            >Book Now</a
+                        >
                     </div>
-                    <div>
-                        <label for="last-name" class="block text-sm font-medium text-secondary mb-2">Last Name*</label>
-                        <input id="last-name" name="last-name" type="text" class="input-field" placeholder="Last Name" required>
+
+                    <!-- Package 2 -->
+                    <div class="border-secondary p-6 rounded-lg text-center">
+                        <h3 class="text-2xl font-bold text-secondary mb-4">
+                            Collection 2
+                        </h3>
+                        <a
+                            href="https://buy.stripe.com/6oU6oH9X2brh9TYe1v5Rm01"
+                            class="submit-btn inline-block"
+                            >Book Now</a
+                        >
                     </div>
-                </div>
 
-                <div class="mb-6">
-                    <label for="email" class="block text-sm font-medium text-secondary mb-2">E-mail*</label>
-                    <input id="email" name="email" type="email" class="input-field" placeholder="example@example.com" required>
-                </div>
-
-                <div class="mb-6">
-                    <label for="phone" class="block text-sm font-medium text-secondary mb-2">Your Contact Number*</label>
-                    <input id="phone" name="phone" type="tel" class="input-field" placeholder="000-000-0000" required>
-                </div>
-
-                <div class="mb-8">
-                    <span class="block text-sm font-medium text-secondary mb-2">Preferred Contact Method*</span>
-                    <div class="flex flex-wrap gap-6 text-gray-700">
-                        <label class="flex items-center space-x-2">
-                            <input type="radio" name="contact-method" value="text" required>
-                            <span>Text</span>
-                        </label>
-                        <label class="flex items-center space-x-2">
-                            <input type="radio" name="contact-method" value="email">
-                            <span>Email</span>
-                        </label>
+                    <!-- Package 3 -->
+                    <div class="border-secondary p-6 rounded-lg text-center">
+                        <h3 class="text-2xl font-bold text-secondary mb-4">
+                            Collection 3
+                        </h3>
+                        <a
+                            href="https://buy.stripe.com/00w9AT0mscvl3vA3mR5Rm02"
+                            class="submit-btn inline-block"
+                            >Book Now</a
+                        >
                     </div>
-                </div>
 
-                <div class="grid md:grid-cols-2 gap-6">
-                    <div>
-                        <label for="session-date" class="block text-sm font-medium text-secondary mb-2">Desired Session Date*</label>
-                        <input id="session-date" name="session-date" type="date" class="input-field" required>
+                    <!-- Package 4 -->
+                    <div class="border-secondary p-6 rounded-lg text-center">
+                        <h3 class="text-2xl font-bold text-secondary mb-4">
+                            Collection 4
+                        </h3>
+                        <a
+                            href="https://buy.stripe.com/7sYbJ1c5a1QH0jo3mR5Rm03"
+                            class="submit-btn inline-block"
+                            >Book Now</a
+                        >
                     </div>
-                    <div>
-                        <label for="session-time" class="block text-sm font-medium text-secondary mb-2">Desired Session Time*</label>
-                        <input id="session-time" name="session-time" type="time" class="input-field" required>
+
+                    <!-- Package 5 -->
+                    <div class="border-secondary p-6 rounded-lg text-center">
+                        <h3 class="text-2xl font-bold text-secondary mb-4">
+                            Collection 5
+                        </h3>
+                        <a
+                            href="https://buy.stripe.com/4gM3cv4CIfHx0jof5z5Rm04"
+                            class="submit-btn inline-block"
+                            >Book Now</a
+                        >
                     </div>
-                </div>
-                <p class="text-sm text-gray-600 italic mb-6">Please note: We book shoots 7 days a week, mornings to late afternoons, with only one client per day so you receive our full attention.</p>
 
-                <div class="mb-6">
-                    <span class="block text-sm font-medium text-secondary mb-2">Have you picked a package prior to filling out this form?*</span>
-                    <div class="space-y-3 text-gray-700">
-                        <label class="flex items-start space-x-2">
-                            <input type="radio" name="package-picked" value="yes" required>
-                            <span>Yes. Continue with the form submission.</span>
-                        </label>
-                        <label class="flex items-start space-x-2">
-                            <input type="radio" name="package-picked" value="no">
-                            <span>No. Please stop and contact Grandadare Photography to pick a package and confirm a session date.<br>409-338-9099 / 832-324-5904 / grandadare@gmail.com</span>
-                        </label>
-                    </div>
-                </div>
-
-                <div class="mb-6">
-                    <label for="package" class="block text-sm font-medium text-secondary mb-2">Which Package?</label>
-                    <input id="package" name="package" type="text" class="input-field" placeholder="Ex. Collection 2">
-                </div>
-
-                <div class="mb-6">
-                    <label for="session-theme" class="block text-sm font-medium text-secondary mb-2">Session Theme</label>
-                    <input id="session-theme" name="session-theme" type="text" class="input-field" placeholder="Describe your theme">
-                </div>
-
-                <div class="mb-6">
-                    <label for="session-size" class="block text-sm font-medium text-secondary mb-2">Number of People in Session</label>
-                    <input id="session-size" name="session-size" type="number" min="1" class="input-field" placeholder="Enter number of participants">
-                </div>
-
-                <div class="mb-6">
-                    <label for="consultation" class="block text-sm font-medium text-secondary mb-2">Schedule a Consultation</label>
-                    <input id="consultation" name="consultation" type="text" class="input-field" placeholder="Best date and time">
-                </div>
-
-                <div class="mb-6">
-                    <label for="session-location" class="block text-sm font-medium text-secondary mb-2">Session Location (place)</label>
-                    <input id="session-location" name="session-location" type="text" class="input-field" placeholder="Type n/a if you are not sure">
-                </div>
-
-                <div class="mb-6">
-                    <label for="inspiration-image" class="block text-sm font-medium text-secondary mb-2">Upload Inspiration Image (optional)</label>
-                    <input type="file" id="inspiration-image" name="inspiration-image" accept="image/*" class="file-input">
-                    <p class="text-sm text-gray-600 mt-2">Max 20 MB. Share a photo that captures your vision.</p>
-                    <p id="file-error" class="text-sm text-red-600 mt-2 hidden">File exceeds 20 MB limit. Please choose a smaller image.</p>
-                </div>
-
-                <div class="mb-6">
-                    <label for="special-notes" class="block text-sm font-medium text-secondary mb-2">Special Request / Additional Note to Photographer</label>
-                    <textarea id="special-notes" name="special-notes" class="input-field" rows="4" placeholder="Type here..." required></textarea>
-                </div>
-
-                <div class="mb-8">
-                    <h3 class="text-lg font-semibold text-primary mb-4">Client Portrait Agreement/Contract/Waiver & Copyright Acknowledgment</h3>
-                    <div class="p-4 rounded-lg" style="background-color: rgba(245, 245, 220, 0.2); border: 1px solid rgba(85, 107, 47, 0.4);">
-                        <div class="mb-6 text-sm text-gray-700 leading-relaxed">
-                            <p class="mb-3">PORTRAIT AGREEMENT & MODEL RELEASE: I have read and agree to the following statement: I commission Grandadare Photography, the photographer, to photograph myself and/or my underage children. I hereby grant Grandadare Photography and her legal representatives and assigns, the irrevocable and unrestricted right to use and publish photographs of myself, family, and/or child(ren), or in which myself, family, and/or children will be included for editorial, trade, advertising, and any other purpose and in any manner or medium; to alter the same without restriction; and to copyright the same. I hereby release Grandadare Photography and her legal representatives and assigns from all claims and liability relating to said photographs.</p>
-                            <div class="flex flex-wrap gap-4">
-                                <label class="flex items-center space-x-2">
-                                    <input type="radio" name="portrait-agreement" value="agree" required>
-                                    <span>I Agree</span>
-                                </label>
-                                <label class="flex items-center space-x-2">
-                                    <input type="radio" name="portrait-agreement" value="do-not-agree">
-                                    <span>I DO NOT Agree</span>
-                                </label>
-                            </div>
-                        </div>
-                        <div class="mb-6 text-sm text-gray-700 leading-relaxed">
-                            <p class="mb-3">COPYRIGHT: As a client of Grandadare Photography, I acknowledge and understand that the images taken by Grandadare, PHOTOGRAPHER; D. Jenkins, are protected by Federal Copyright Laws. I understand it is ILLEGAL to copy or reproduce these photographs elsewhere without the PHOTOGRAPHER's permission, and violators of this Federal Law will be subject to its civil and criminal penalties. A limited PRINT RELEASE is supplied with the purchase of my session digital files to print your portraits for your own personal use. The print release does not allow publication of your portraits (i.e. entering in contests), selling or altering your images without the PHOTOGRAPHER's permission.</p>
-                            <div class="flex flex-wrap gap-4">
-                                <label class="flex items-center space-x-2">
-                                    <input type="radio" name="copyright-agreement" value="agree" required>
-                                    <span>I Agree</span>
-                                </label>
-                                <label class="flex items-center space-x-2">
-                                    <input type="radio" name="copyright-agreement" value="do-not-agree">
-                                    <span>I DO NOT Agree</span>
-                                </label>
-                            </div>
-                        </div>
-                        <div class="text-sm text-gray-700 leading-relaxed">
-                            <p class="mb-3">By signing below you certify that you are a parent or guardian or at least 18 years of age. You have read this portrait agreement/contract and fully understand the contents thereof. You agree that you have the legal authority to grant these permissions and accept all responsibility for such.</p>
-                            <label class="flex items-center space-x-2">
-                                <input type="checkbox" name="adult-confirmation" value="yes" required>
-                                <span>I acknowledge and agree.</span>
-                            </label>
-                        </div>
+                    <!-- Package 6 -->
+                    <div class="border-secondary p-6 rounded-lg text-center">
+                        <h3 class="text-2xl font-bold text-secondary mb-4">
+                            Collection 6
+                        </h3>
+                        <a
+                            href="https://buy.stripe.com/cNi3cv4CI0MD1ns8Hb5Rm05"
+                            class="submit-btn inline-block"
+                            >Book Now</a
+                        >
                     </div>
                 </div>
+                <div class="mt-8 text-center">
+                    <p class="text-gray-700">
+                        After booking, you can schedule your appointment here:
+                    </p>
+                    <a
+                        href="https://calendar.app.google/vpCiqodzftyRoq2b9"
+                        class="text-secondary font-bold hover:underline"
+                        >Schedule Appointment</a
+                    >
+                </div>
+            </div>
+        </section>
 
-                <button type="submit" class="submit-btn font-bold w-full">PROCEED TO PAYMENT</button>
-            </form>
-        </div>
-    </section>
+        <!-- Footer -->
+        <footer class="py-10 bg-black text-center">
+            <div class="container mx-auto px-6">
+                <p class="text-white mb-4">
+                    © 2024 Grandadare PHOTOGRAPHY. ALL RIGHTS RESERVED.
+                </p>
+                <p class="text-gray-500 text-sm">
+                    CRAFTED WITH A LOVE FOR THE NATURAL WORLD
+                </p>
+            </div>
+        </footer>
 
-    <!-- Footer -->
-    <footer class="py-10 bg-black text-center">
-        <div class="container mx-auto px-6">
-            <p class="text-white mb-4">© 2024 Grandadare PHOTOGRAPHY. ALL RIGHTS RESERVED.</p>
-            <p class="text-gray-500 text-sm">CRAFTED WITH A LOVE FOR THE NATURAL WORLD</p>
-        </div>
-    </footer>
-
-    <script>
-        // Mobile Menu Toggle
-        const menuBtn = document.getElementById('menu-btn');
-        const mobileMenu = document.getElementById('mobile-menu');
-        menuBtn.addEventListener('click', () => {
-            mobileMenu.classList.toggle('hidden');
-        });
-
-        // Smooth scrolling for navigation links
-        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-            anchor.addEventListener('click', function (e) {
-                e.preventDefault();
-                const target = document.querySelector(this.getAttribute('href'));
-                if (target) {
-                    target.scrollIntoView({ behavior: 'smooth' });
-                }
-                // Close mobile menu if open
-                mobileMenu.classList.add('hidden');
+        <script>
+            // Mobile Menu Toggle
+            const menuBtn = document.getElementById("menu-btn");
+            const mobileMenu = document.getElementById("mobile-menu");
+            menuBtn.addEventListener("click", () => {
+                mobileMenu.classList.toggle("hidden");
             });
-        });
 
-        // Booking form handling
-        const bookingForm = document.getElementById('booking-form');
-        const fileInput = document.getElementById('inspiration-image');
-        const fileError = document.getElementById('file-error');
-        const MAX_FILE_SIZE = 20 * 1024 * 1024; // 20 MB limit
-
-        if (fileInput) {
-            fileInput.addEventListener('change', () => {
-                if (fileError) {
-                    fileError.classList.add('hidden');
-                }
-                const file = fileInput.files[0];
-                if (file && file.size > MAX_FILE_SIZE) {
-                    if (fileError) {
-                        fileError.classList.remove('hidden');
-                    }
-                    fileInput.value = '';
-                }
-            });
-        }
-
-        if (bookingForm) {
-            bookingForm.addEventListener('submit', function(e) {
-                if (fileInput && fileInput.files[0] && fileInput.files[0].size > MAX_FILE_SIZE) {
+            // Smooth scrolling for navigation links
+            document.querySelectorAll('a[href^="#"]').forEach((anchor) => {
+                anchor.addEventListener("click", function (e) {
                     e.preventDefault();
-                    if (fileError) {
-                        fileError.classList.remove('hidden');
+                    const target = document.querySelector(
+                        this.getAttribute("href"),
+                    );
+                    if (target) {
+                        target.scrollIntoView({ behavior: "smooth" });
                     }
-                    return;
-                }
-                e.preventDefault();
-                // Here you would typically send the form data to your server
-                // and then redirect to Stripe Checkout or handle payment
-                alert('Booking request received! You will be redirected to payment shortly.');
-                // For now, we'll just simulate a redirect to a payment page
-                // In a real scenario, you'd use Stripe.js to create a payment intent
-                window.location.href = 'https://buy.stripe.com/test_00g14odgW2DefiU144'; // Example Stripe test link
+                    // Close mobile menu if open
+                    mobileMenu.classList.add("hidden");
+                });
             });
-        }
-    </script>
-</body>
+        </script>
+    </body>
 </html>
