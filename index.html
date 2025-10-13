@@ -1,508 +1,1011 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Grandadare | Heartfelt Photography & Custom Graphics</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <style>
-        @import url('https://fonts.googleapis.com/css2?family=Lora:wght@400;500;700&family=Roboto:wght@300;400;500&display=swap');
-        :root {
-            --primary-color: #c5a880;
-            --secondary-color: #556b2f;
-            --accent-color: #a0522d;
-            --dark-bg: #2d2a26;
-            --light-text: #f5f5dc;
-            --light-bg: #f8f8f8;
-            --dark-text: #333333;
-        }
-        body {
-            font-family: 'Roboto', sans-serif;
-            background-color: var(--dark-bg);
-            color: var(--light-text);
-            overflow-x: hidden;
-        }
-        h1, h2, h3, h4, .nav-item {
-            font-family: 'Lora', serif;
-        }
-        .text-primary { color: var(--primary-color); }
-        .text-secondary { color: var(--secondary-color); }
-        .text-accent { color: var(--accent-color); }
-        .border-primary { border: 2px solid var(--primary-color); }
-        .border-secondary { border: 2px solid var(--secondary-color); }
-        .nav-item:hover { color: var(--primary-color); }
-        .profile-circle {
-            border: 3px solid var(--primary-color);
-            box-shadow: 0 0 15px rgba(197, 168, 128, 0.3);
-        }
-        .testimonial-card {
-            background: rgba(0, 0, 0, 0.2);
-            border-top: 3px solid var(--primary-color);
-        }
-        .lightbox {
-            display: none;
-            position: fixed;
-            z-index: 1000;
-            left: 0;
-            top: 0;
-            width: 100%;
-            height: 100%;
-            background-color: rgba(0,0,0,0.9);
-            align-items: center;
-            justify-content: center;
-        }
-        .lightbox-content {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100%;
-            position: relative;
-        }
-        .lightbox-img {
-            max-width: 90%;
-            max-height: 90%;
-            object-fit: contain;
-        }
-        .close, .prev, .next {
-            color: white;
-            font-size: 40px;
-            cursor: pointer;
-            position: absolute;
-            transition: 0.3s;
-            user-select: none;
-        }
-        .close { top: 20px; right: 30px; }
-        .prev { left: 30px; }
-        .next { right: 30px; }
-        .close:hover, .prev:hover, .next:hover { color: var(--primary-color); }
-        .masonry {
-            column-count: 3;
-            column-gap: 1rem;
-        }
-        @media (max-width: 1024px) { .masonry { column-count: 2; } }
-        @media (max-width: 640px) { .masonry { column-count: 1; } }
-        .masonry-item {
-            break-inside: avoid;
-            margin-bottom: 1rem;
-            position: relative;
-            overflow: hidden;
-            cursor: pointer;
-            transition: transform 0.3s;
-        }
-        .masonry-item:hover { transform: scale(1.02); }
-        .masonry-item img {
-            width: 100%;
-            height: auto;
-            display: block;
-            transition: transform 0.5s;
-        }
-        .masonry-item:hover img { transform: scale(1.1); }
-        .slider {
-            position: relative;
-            width: 100%;
-            height: 100vh;
-            overflow: hidden;
-        }
-        .slide {
-            position: absolute;
-            width: 100%;
-            height: 100%;
-            opacity: 0;
-            transition: opacity 1s ease-in-out;
-            background-size: cover;
-            background-position: center 70%;
-        }
-        .slide.active { opacity: 1; }
-        .slide-content {
-            position: absolute;
-            bottom: 100px;
-            left: 50px;
-            max-width: 600px;
-            background: rgba(45, 42, 38, 0.7);
-            padding: 30px;
-            border-left: 5px solid var(--primary-color);
-        }
-        .input-field {
-            background: transparent;
-            border: none;
-            border-bottom: 2px solid var(--secondary-color);
-            color: var(--dark-text);
-            padding: 10px 0;
-            margin-bottom: 20px;
-            width: 100%;
-            outline: none;
-            transition: border-bottom-color 0.3s;
-        }
-        .input-field:focus { border-bottom-color: var(--primary-color); }
-        .submit-btn {
-            background-color: var(--primary-color);
-            border: none;
-            padding: 12px 30px;
-            color: var(--dark-bg);
-            font-weight: bold;
-            cursor: pointer;
-            transition: all 0.3s;
-        }
-        .submit-btn:hover {
-            background-color: var(--accent-color);
-            color: var(--light-text);
-            transform: translateY(-2px);
-        }
-        .social-icon {
-            width: 50px;
-            height: 50px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            border-radius: 50%;
-            font-size: 20px;
-            transition: all 0.3s;
-            margin: 0 10px;
-            border: 2px solid var(--secondary-color);
-            color: var(--secondary-color);
-        }
-        .social-icon:hover {
-            transform: translateY(-5px) scale(1.1);
-            background-color: var(--secondary-color);
-            color: var(--light-text);
-        }
-        .instagram, .facebook, .linkedin { background: transparent; }
-        .star { color: var(--primary-color); }
-        .about-logo { object-position: center 45%; }
-    </style>
-</head>
-<body>
-    <!-- Navigation -->
-    <nav class="fixed w-full z-50 bg-black bg-opacity-80 backdrop-filter backdrop-blur-md">
-        <div class="container mx-auto px-6 py-4">
-            <div class="flex justify-between items-center">
-                <div class="text-2xl font-bold text-primary">Grandadare</div>
-                <div class="hidden md:flex space-x-8">
-                    <a href="#home" class="nav-item text-white transition duration-300">Home</a>
-                    <a href="#gallery" class="nav-item text-white transition duration-300">Gallery</a>
-                    <a href="#about" class="nav-item text-white transition duration-300">About</a>
-                    <a href="#testimonials" class="nav-item text-white transition duration-300">Testimonials</a>
-                    <a href="#contact" class="nav-item text-white transition duration-300">Contact</a>
-                    <a href="faq.html" class="nav-item text-white transition duration-300">FAQ</a>
-                </div>
-                <div class="md:hidden">
-                    <button id="menu-btn" class="text-white focus:outline-none">
-                        <i class="fas fa-bars text-2xl"></i>
-                    </button>
-                </div>
-            </div>
-        </div>
-        <!-- Mobile Menu -->
-        <div id="mobile-menu" class="hidden md:hidden bg-black bg-opacity-90 w-full px-6 py-4">
-            <div class="flex flex-col space-y-4">
-                <a href="#home" class="nav-item text-white transition duration-300">Home</a>
-                <a href="#gallery" class="nav-item text-white transition duration-300">Gallery</a>
-                <a href="#about" class="nav-item text-white transition duration-300">About</a>
-                <a href="#testimonials" class="nav-item text-white transition duration-300">Testimonials</a>
-                <a href="#contact" class="nav-item text-white transition duration-300">Contact</a>
-                <a href="faq.html" class="nav-item text-white transition duration-300">FAQ</a>
-            </div>
-        </div>
-    </nav>
-
-    <!-- Full Screen Slider -->
-    <section id="home" class="slider">
-        <div class="slide active" style="background-image: url('G1.jpg');">
-            <div class="slide-content">
-                <h2 class="text-primary text-4xl mb-4">WILDERNESS UNVEILED</h2>
-                <p class="text-white mb-4">Capturing the untamed beauty of the natural world, from majestic mountains to serene forest floors.</p>
-                <a href="#gallery" class="text-secondary">VIEW GALLERY <i class="fas fa-arrow-down ml-2"></i></a>
-            </div>
-        </div>
-        <div class="slide" style="background-image: url('G2.jpg');">
-            <div class="slide-content">
-                <h2 class="text-primary text-4xl mb-4">AUTHENTIC PORTRAITS</h2>
-                <p class="text-white mb-4">Natural light portraits that reveal the genuine spirit and emotion of the moment, set against stunning backdrops.</p>
-                <a href="#gallery" class="text-secondary">EXPLORE WORK <i class="fas fa-arrow-down ml-2"></i></a>
-            </div>
-        </div>
-        <div class="slide" style="background-image: url('G11.jpg');">
-            <div class="slide-content">
-                <h2 class="text-primary text-4xl mb-4">LANDSCAPE STORIES</h2>
-                <p class="text-white mb-4">Every landscape has a story. We find the narrative in the light, the land, and the seasons.</p>
-                <a href="#gallery" class="text-secondary">SEE COLLECTION <i class="fas fa-arrow-down ml-2"></i></a>
-            </div>
-        </div>
-    </section>
-
-    <!-- Masonry Gallery -->
-    <section id="gallery" class="py-20 px-6 container mx-auto" style="background-color: var(--light-bg); color: var(--dark-text);">
-        <h2 class="text-4xl font-bold mb-16 text-center text-secondary">GALLERY</h2>
-        <div class="masonry">
-            <!-- Gallery Items -->
-            <div class="masonry-item">
-                <img src="grand4.jpg" alt="Forest path" class="gallery-img" onclick="openLightbox('grand4.jpg')">
-            </div>
-            <div class="masonry-item">
-                <img src="grand5.jpg" alt="Coastal cliffs" class="gallery-img" onclick="openLightbox('grand5.jpg')">
-            </div>
-            <div class="masonry-item">
-                <img src="grand6.jpg" alt="Outdoor portrait" class="gallery-img" onclick="openLightbox('grand6.jpg')">
-            </div>
-            <div class="masonry-item">
-                <img src="grand7.jpg" alt="Mountain peak" class="gallery-img" onclick="openLightbox('grand7.jpg')">
-            </div>
-            <div class="masonry-item">
-                <img src="grand8.jpg" alt="Lakeside dock" class="gallery-img" onclick="openLightbox('grand8.jpg')">
-            </div>
-            <div class="masonry-item">
-                <img src="grand9.jpg" alt="Man in wheat field" class="gallery-img" onclick="openLightbox('grand9.jpg')">
-            </div>
-            <div class="masonry-item">
-                <img src="grand10.jpg" alt="Waterfall" class="gallery-img" onclick="openLightbox('grand10.jpg')">
-            </div>
-            <div class="masonry-item">
-                <img src="G6.png" alt="Green forest" class="gallery-img" onclick="openLightbox('G6.png')">
-            </div>
-        </div>
-    </section>
-
-    <!-- Lightbox -->
-    <div id="lightbox" class="lightbox">
-        <div class="lightbox-content">
-            <span class="close" onclick="closeLightbox()">&times;</span>
-            <span class="prev" onclick="changeSlide(-1)">&#10094;</span>
-            <img id="lightbox-img" class="lightbox-img" src="">
-            <span class="next" onclick="changeSlide(1)">&#10095;</span>
-        </div>
-    </div>
-
-    <!-- About Section -->
-    <section id="about" class="py-20 px-6 container mx-auto" style="background-color: var(--light-bg); color: var(--dark-text);">
-        <div class="flex flex-col md:flex-row items-center">
-            <div class="md:w-1/3 flex justify-center mb-10 md:mb-0">
-                <div class="profile-circle w-64 h-64 rounded-full overflow-hidden">
-                    <img src="logo.png" alt="Grandadare logo" class="w-full h-full object-cover about-logo">
-                </div>
-            </div>
-            <div class="md:w-2/3 md:pl-16">
-                <h2 class="text-4xl font-bold mb-8 text-primary">ABOUT GRANDADARE</h2>
-                <h3 class="text-2xl mb-6 text-secondary">HEARTFELT PHOTOGRAPHY & CUSTOM GRAPHICS</h3>
-                <p class="mb-6 leading-relaxed">We're excited to collaborate with you! Welcome to Grandadare, where heartfelt photography meets Southern charm. We are proudly located in Southeast Texas, serving clients across the Golden Triangle & United States.</p>
-                <p class="mb-6 leading-relaxed">At Grandadare, we're not just photographers...we're memory-makers. We pour our passion into every image and graphic project. We love what we do and guarantee to not only meet but exceed your expectations. Your satisfaction is our priority.</p>
-                <p class="mb-6 leading-relaxed">Each session is tailor-made to suit your unique needs, ensuring a personalized experience. Are you ready to capture the essence of your senior year? Grandadare photography specializes in creating timeless senior portraits that reflect genuine emotions and unforgettable moments. Because while memories may fade, our photos will stand the test of time.</p>
-                <div class="grid grid-cols-2 gap-4 mt-8">
-                    <div>
-                        <h4 class="text-secondary text-lg mb-2">Specialties</h4>
-                        <ul class="text-light-text">
-                            <li class="mb-1">• Landscape Photography</li>
-                            <li class="mb-1">• Natural Light Portraiture</li>
-                            <li class="mb-1">• Drone & Aerial Shots</li>
-                            <li class="mb-1">• Event & Wedding</li>
-                        </ul>
-                    </div>
-                    <div>
-                        <h4 class="text-primary text-lg mb-2">Equipment</h4>
-                        <ul class="text-light-text">
-                            <li class="mb-1">• Sony A7R IV</li>
-                            <li class="mb-1">• DJI Mavic 3</li>
-                            <li class="mb-1">• Canon L-Series Lenses</li>
-                            <li class="mb-1">• Natural Reflectors</li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Testimonials -->
-    <section id="testimonials" class="py-20 px-6 bg-black bg-opacity-50">
-        <div class="container mx-auto">
-            <h2 class="text-4xl font-bold mb-16 text-center text-secondary">CLIENT TESTIMONIALS</h2>
-            <div class="grid md:grid-cols-3 gap-10">
-                <!-- Testimonial 1 -->
-                <div class="testimonial-card p-8 rounded-lg">
-                    <div class="flex items-center mb-4">
-                        <img src="grand1.jpg" alt="Rachel Brown" class="w-16 h-16 rounded-full object-cover mr-4">
-                        <div>
-                            <h4 class="text-primary text-xl">Rachel Brown</h4>
-                            <p class="text-gray-400">Engagement Session</p>
-                        </div>
-                    </div>
-                    <div class="flex mb-4">
-                        <span class="star">★</span><span class="star">★</span><span class="star">★</span><span class="star">★</span><span class="star">★</span>
-                    </div>
-                    <p class="italic">"Dee was absolutely amazing to work with! She handled every detail from locations to poses, and we ended with images and memories to last a lifetime."</p>
-                </div>
-                <!-- Testimonial 2 -->
-                <div class="testimonial-card p-8 rounded-lg">
-                    <div class="flex items-center mb-4">
-                        <img src="grand2.jpg" alt="Toni Blivens" class="w-16 h-16 rounded-full object-cover mr-4">
-                        <div>
-                            <h4 class="text-secondary text-xl">Toni Blivens</h4>
-                            <p class="text-gray-400">Senior Portraits</p>
-                        </div>
-                    </div>
-                    <div class="flex mb-4">
-                        <span class="star">★</span><span class="star">★</span><span class="star">★</span><span class="star">★</span><span class="star">★</span>
-                    </div>
-                    <p class="italic">"My son is graduating this year and usually hates photos, but by the end of the session we bought every single shot. Keisha is the best - professional, patient, and so talented."</p>
-                </div>
-                <!-- Testimonial 3 -->
-                <div class="testimonial-card p-8 rounded-lg">
-                    <div class="flex items-center mb-4">
-                        <img src="G8.png" alt="Vikki G" class="w-16 h-16 rounded-full object-cover mr-4">
-                        <div>
-                            <h4 class="text-primary text-xl">Vikki G</h4>
-                            <p class="text-gray-400">Family Portraits</p>
-                        </div>
-                    </div>
-                    <div class="flex mb-4">
-                        <span class="star">★</span><span class="star">★</span><span class="star">★</span><span class="star">★</span><span class="star">★</span>
-                    </div>
-                    <p class="italic">"Dee is wonderful to work with. She was patient with my little one, kept the shoot fun, and delivered photos we absolutely love."</p>
-                </div>
-            </div>
-            <div class="text-center mt-10">
-                <a href="https://www.google.com/search?sca_esv=eb6537429eff7540&hl=en-US&sxsrf=AE3TifNzUZF3hjBWxZaCeDNvXjINWqLG9g:1759594567583&si=AMgyJEtREmoPL4P1I5IDCfuA8gybfVI2d5Uj7QMwYCZHKDZ-E3QC5xY2vVcEJFdXbwTUil1qimxcx0d8bvjB80AwAConqi7Eo7_NoiaVcIvl-Ds_E6HTEggl_RboyuMWSmr7ywWd3MHAp-O0BdpR-E_M78U41GqTM2Izqb8SMjOjzlAyNAbaGEEiUJcPuxmu-9es6ncHj23O&q=Grandadare+Portrait+Photography+%26+Graphic+Design+Reviews&sa=X&ved=2ahUKEwjr6pjJ-IqQAxWWmSYFHcnEHKUQ0bkNegQIIBAE&biw=1850&bih=966&dpr=1" target="_blank" rel="noopener" class="text-primary underline">Read more Google reviews -></a>
-            </div>
-        </div>
-    </section>
-
-    <!-- Contact Section -->
-    <section id="contact" class="py-20 px-6 container mx-auto" style="background-color: var(--light-bg); color: var(--dark-text);">
-        <h2 class="text-4xl font-bold mb-16 text-center text-primary">GET IN TOUCH</h2>
-        <div class="flex flex-col md:flex-row">
-            <div class="md:w-1/2 mb-10 md:mb-0 md:pr-10">
-                <h3 class="text-2xl mb-6 text-secondary">CONTACT INFORMATION</h3>
-                <p class="mb-8 leading-relaxed">Interested in a landscape print, a portrait session, or capturing a special event? I'd love to hear from you. Let's discuss how we can create beautiful, lasting images together.</p>
-                <div class="mb-6">
-                    <h4 class="text-primary text-lg mb-2">Email</h4>
-                    <p>grandadare@gmail.com</p>
-                </div>
-                <div class="mb-6">
-                    <h4 class="text-secondary text-lg mb-2">Studio</h4>
-                    <p>By appointment</p>
-                    <p>Beaumont, Texas</p>
-                </div>
-                <div class="mb-8">
-                    <a href="booking.html" class="submit-btn font-bold inline-block text-center">BOOK NOW</a>
-                </div>
-                <div class="flex mt-10">
-                    <a href="#" class="social-icon instagram"><i class="fab fa-instagram"></i></a>
-                    <a href="#" class="social-icon facebook"><i class="fab fa-facebook-f"></i></a>
-                    <a href="#" class="social-icon linkedin"><i class="fab fa-linkedin-in"></i></a>
-                </div>
-            </div>
-            <div class="md:w-1/2">
-                <form class="border-secondary p-8 rounded-lg">
-                    <div class="mb-6">
-                        <input type="text" class="input-field" placeholder="Your Name" required>
-                    </div>
-                    <div class="mb-6">
-                        <input type="email" class="input-field" placeholder="Your Email" required>
-                    </div>
-                    <div class="mb-6">
-                        <select class="input-field">
-                            <option value="" disabled selected>Inquiry Type</option>
-                            <option value="commercial">Commercial</option>
-                            <option value="event">Event / Wedding</option>
-                            <option value="portrait">Portrait Session</option>
-                            <option value="print">Print Purchase</option>
-                            <option value="other">Other</option>
-                        </select>
-                    </div>
-                    <div class="mb-6">
-                        <textarea class="input-field" rows="4" placeholder="Your Message" required></textarea>
-                    </div>
-                    <button type="submit" class="submit-btn font-bold">SEND MESSAGE</button>
-                </form>
-            </div>
-        </div>
-    </section>
-
-    <!-- Footer -->
-    <footer class="py-10 bg-black text-center">
-        <div class="container mx-auto px-6">
-            <p class="text-white mb-4">© 2025 Grandadare PHOTOGRAPHY. ALL RIGHTS RESERVED.</p>
-            <p class="text-gray-500 text-sm">CRAFTED WITH A LOVE FOR THE NATURAL WORLD</p>
-        </div>
-    </footer>
-
-    <script>
-        // Mobile Menu Toggle
-        const menuBtn = document.getElementById('menu-btn');
-        const mobileMenu = document.getElementById('mobile-menu');
-        menuBtn.addEventListener('click', () => {
-            mobileMenu.classList.toggle('hidden');
-        });
-
-        // Smooth scrolling for navigation links
-        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-            anchor.addEventListener('click', function (e) {
-                e.preventDefault();
-                const target = document.querySelector(this.getAttribute('href'));
-                if (target) {
-                    target.scrollIntoView({ behavior: 'smooth' });
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Grandadare | Heartfelt Photography & Custom Graphics</title>
+        <script src="https://cdn.tailwindcss.com"></script>
+        <link
+            rel="stylesheet"
+            href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+        />
+        <style>
+            @import url("https://fonts.googleapis.com/css2?family=Lora:wght@400;500;700&family=Roboto:wght@300;400;500&display=swap");
+            :root {
+                --primary-color: #c5a880;
+                --secondary-color: #556b2f;
+                --accent-color: #a0522d;
+                --dark-bg: #2d2a26;
+                --light-text: #f5f5dc;
+                --light-bg: #f8f8f8;
+                --dark-text: #333333;
+            }
+            body {
+                font-family: "Roboto", sans-serif;
+                background-color: var(--dark-bg);
+                color: var(--light-text);
+                overflow-x: hidden;
+            }
+            h1,
+            h2,
+            h3,
+            h4,
+            .nav-item {
+                font-family: "Lora", serif;
+            }
+            .text-primary {
+                color: var(--primary-color);
+            }
+            .text-secondary {
+                color: var(--secondary-color);
+            }
+            .text-accent {
+                color: var(--accent-color);
+            }
+            .border-primary {
+                border: 2px solid var(--primary-color);
+            }
+            .border-secondary {
+                border: 2px solid var(--secondary-color);
+            }
+            .nav-item:hover {
+                color: var(--primary-color);
+            }
+            .profile-circle {
+                border: 3px solid var(--primary-color);
+                box-shadow: 0 0 15px rgba(197, 168, 128, 0.3);
+            }
+            .testimonial-card {
+                background: rgba(0, 0, 0, 0.2);
+                border-top: 3px solid var(--primary-color);
+            }
+            .lightbox {
+                display: none;
+                position: fixed;
+                z-index: 1000;
+                left: 0;
+                top: 0;
+                width: 100%;
+                height: 100%;
+                background-color: rgba(0, 0, 0, 0.9);
+                align-items: center;
+                justify-content: center;
+            }
+            .lightbox-content {
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                height: 100%;
+                position: relative;
+            }
+            .lightbox-img {
+                max-width: 90%;
+                max-height: 90%;
+                object-fit: contain;
+            }
+            .close,
+            .prev,
+            .next {
+                color: white;
+                font-size: 40px;
+                cursor: pointer;
+                position: absolute;
+                transition: 0.3s;
+                user-select: none;
+            }
+            .close {
+                top: 20px;
+                right: 30px;
+            }
+            .prev {
+                left: 30px;
+            }
+            .next {
+                right: 30px;
+            }
+            .close:hover,
+            .prev:hover,
+            .next:hover {
+                color: var(--primary-color);
+            }
+            .masonry {
+                column-count: 3;
+                column-gap: 1rem;
+            }
+            @media (max-width: 1024px) {
+                .masonry {
+                    column-count: 2;
                 }
-                // Close mobile menu if open
-                mobileMenu.classList.add('hidden');
+            }
+            @media (max-width: 640px) {
+                .masonry {
+                    column-count: 1;
+                }
+            }
+            .masonry-item {
+                break-inside: avoid;
+                margin-bottom: 1rem;
+                position: relative;
+                overflow: hidden;
+                cursor: pointer;
+                transition: transform 0.3s;
+            }
+            .masonry-item:hover {
+                transform: scale(1.02);
+            }
+            .masonry-item img {
+                width: 100%;
+                height: auto;
+                display: block;
+                transition: transform 0.5s;
+            }
+            .masonry-item:hover img {
+                transform: scale(1.1);
+            }
+            .slider {
+                position: relative;
+                width: 100%;
+                height: 100vh;
+                overflow: hidden;
+            }
+            .slide {
+                position: absolute;
+                width: 100%;
+                height: 100%;
+                opacity: 0;
+                transition: opacity 1s ease-in-out;
+                background-size: cover;
+                background-position: center 70%;
+            }
+            .slide.active {
+                opacity: 1;
+            }
+            .slide-content {
+                position: absolute;
+                bottom: 100px;
+                left: 50px;
+                max-width: 600px;
+                background: rgba(45, 42, 38, 0.7);
+                padding: 30px;
+                border-left: 5px solid var(--primary-color);
+            }
+            .input-field {
+                background: transparent;
+                border: none;
+                border-bottom: 2px solid var(--secondary-color);
+                color: var(--dark-text);
+                padding: 10px 0;
+                margin-bottom: 20px;
+                width: 100%;
+                outline: none;
+                transition: border-bottom-color 0.3s;
+            }
+            .input-field:focus {
+                border-bottom-color: var(--primary-color);
+            }
+            .submit-btn {
+                background-color: var(--primary-color);
+                border: none;
+                padding: 12px 30px;
+                color: var(--dark-bg);
+                font-weight: bold;
+                cursor: pointer;
+                transition: all 0.3s;
+            }
+            .submit-btn:hover {
+                background-color: var(--accent-color);
+                color: var(--light-text);
+                transform: translateY(-2px);
+            }
+            .social-icon {
+                width: 50px;
+                height: 50px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                border-radius: 50%;
+                font-size: 20px;
+                transition: all 0.3s;
+                margin: 0 10px;
+                border: 2px solid var(--secondary-color);
+                color: var(--secondary-color);
+            }
+            .social-icon:hover {
+                transform: translateY(-5px) scale(1.1);
+                background-color: var(--secondary-color);
+                color: var(--light-text);
+            }
+            .instagram,
+            .facebook,
+            .linkedin {
+                background: transparent;
+            }
+            .star {
+                color: var(--primary-color);
+            }
+            .about-logo {
+                object-position: center 45%;
+            }
+        </style>
+    </head>
+    <body>
+        <!-- Navigation -->
+        <nav
+            class="fixed w-full z-50 bg-black bg-opacity-80 backdrop-filter backdrop-blur-md"
+        >
+            <div class="container mx-auto px-6 py-4">
+                <div class="flex justify-between items-center">
+                    <div class="text-2xl font-bold text-primary">
+                        Grandadare
+                    </div>
+                    <div class="hidden md:flex space-x-8">
+                        <a
+                            href="#home"
+                            class="nav-item text-white transition duration-300"
+                            >Home</a
+                        >
+                        <a
+                            href="#gallery"
+                            class="nav-item text-white transition duration-300"
+                            >Gallery</a
+                        >
+                        <a
+                            href="#about"
+                            class="nav-item text-white transition duration-300"
+                            >About</a
+                        >
+                        <a
+                            href="#testimonials"
+                            class="nav-item text-white transition duration-300"
+                            >Testimonials</a
+                        >
+                        <a
+                            href="#pricing"
+                            class="nav-item text-white transition duration-300"
+                            >Pricing</a
+                        >
+                        <a
+                            href="#contact"
+                            class="nav-item text-white transition duration-300"
+                            >Contact</a
+                        >
+                        <a
+                            href="faq.html"
+                            class="nav-item text-white transition duration-300"
+                            >FAQ</a
+                        >
+                    </div>
+                    <div class="md:hidden">
+                        <button
+                            id="menu-btn"
+                            class="text-white focus:outline-none"
+                        >
+                            <i class="fas fa-bars text-2xl"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+            <!-- Mobile Menu -->
+            <div
+                id="mobile-menu"
+                class="hidden md:hidden bg-black bg-opacity-90 w-full px-6 py-4"
+            >
+                <div class="flex flex-col space-y-4">
+                    <a
+                        href="#home"
+                        class="nav-item text-white transition duration-300"
+                        >Home</a
+                    >
+                    <a
+                        href="#gallery"
+                        class="nav-item text-white transition duration-300"
+                        >Gallery</a
+                    >
+                    <a
+                        href="#about"
+                        class="nav-item text-white transition duration-300"
+                        >About</a
+                    >
+                    <a
+                        href="#testimonials"
+                        class="nav-item text-white transition duration-300"
+                        >Testimonials</a
+                    >
+                    <a
+                        href="#pricing"
+                        class="nav-item text-white transition duration-300"
+                        >Pricing</a
+                    >
+                    <a
+                        href="#contact"
+                        class="nav-item text-white transition duration-300"
+                        >Contact</a
+                    >
+                    <a
+                        href="faq.html"
+                        class="nav-item text-white transition duration-300"
+                        >FAQ</a
+                    >
+                </div>
+            </div>
+        </nav>
+
+        <!-- Full Screen Slider -->
+        <section id="home" class="slider">
+            <div
+                class="slide active"
+                style="background-image: url(&quot;G1.jpg&quot;)"
+            >
+                <div class="slide-content">
+                    <h2 class="text-primary text-4xl mb-4">
+                        WILDERNESS UNVEILED
+                    </h2>
+                    <p class="text-white mb-4">
+                        Capturing the untamed beauty of the natural world, from
+                        majestic mountains to serene forest floors.
+                    </p>
+                    <a href="#gallery" class="text-secondary"
+                        >VIEW GALLERY <i class="fas fa-arrow-down ml-2"></i
+                    ></a>
+                </div>
+            </div>
+            <div
+                class="slide"
+                style="background-image: url(&quot;G2.jpg&quot;)"
+            >
+                <div class="slide-content">
+                    <h2 class="text-primary text-4xl mb-4">
+                        AUTHENTIC PORTRAITS
+                    </h2>
+                    <p class="text-white mb-4">
+                        Natural light portraits that reveal the genuine spirit
+                        and emotion of the moment, set against stunning
+                        backdrops.
+                    </p>
+                    <a href="#gallery" class="text-secondary"
+                        >EXPLORE WORK <i class="fas fa-arrow-down ml-2"></i
+                    ></a>
+                </div>
+            </div>
+            <div
+                class="slide"
+                style="background-image: url(&quot;G11.jpg&quot;)"
+            >
+                <div class="slide-content">
+                    <h2 class="text-primary text-4xl mb-4">
+                        LANDSCAPE STORIES
+                    </h2>
+                    <p class="text-white mb-4">
+                        Every landscape has a story. We find the narrative in
+                        the light, the land, and the seasons.
+                    </p>
+                    <a href="#gallery" class="text-secondary"
+                        >SEE COLLECTION <i class="fas fa-arrow-down ml-2"></i
+                    ></a>
+                </div>
+            </div>
+        </section>
+
+        <!-- Masonry Gallery -->
+        <section
+            id="gallery"
+            class="py-20 px-6 container mx-auto"
+            style="background-color: var(--light-bg); color: var(--dark-text)"
+        >
+            <h2 class="text-4xl font-bold mb-16 text-center text-secondary">
+                GALLERY
+            </h2>
+            <div class="masonry">
+                <!-- Gallery Items -->
+                <div class="masonry-item">
+                    <img
+                        src="grand4.jpg"
+                        alt="Forest path"
+                        class="gallery-img"
+                        onclick="openLightbox('grand4.jpg')"
+                    />
+                </div>
+                <div class="masonry-item">
+                    <img
+                        src="grand5.jpg"
+                        alt="Coastal cliffs"
+                        class="gallery-img"
+                        onclick="openLightbox('grand5.jpg')"
+                    />
+                </div>
+                <div class="masonry-item">
+                    <img
+                        src="grand6.jpg"
+                        alt="Outdoor portrait"
+                        class="gallery-img"
+                        onclick="openLightbox('grand6.jpg')"
+                    />
+                </div>
+                <div class="masonry-item">
+                    <img
+                        src="grand7.jpg"
+                        alt="Mountain peak"
+                        class="gallery-img"
+                        onclick="openLightbox('grand7.jpg')"
+                    />
+                </div>
+                <div class="masonry-item">
+                    <img
+                        src="grand8.jpg"
+                        alt="Lakeside dock"
+                        class="gallery-img"
+                        onclick="openLightbox('grand8.jpg')"
+                    />
+                </div>
+                <div class="masonry-item">
+                    <img
+                        src="grand9.jpg"
+                        alt="Man in wheat field"
+                        class="gallery-img"
+                        onclick="openLightbox('grand9.jpg')"
+                    />
+                </div>
+                <div class="masonry-item">
+                    <img
+                        src="grand10.jpg"
+                        alt="Waterfall"
+                        class="gallery-img"
+                        onclick="openLightbox('grand10.jpg')"
+                    />
+                </div>
+                <div class="masonry-item">
+                    <img
+                        src="G6.png"
+                        alt="Green forest"
+                        class="gallery-img"
+                        onclick="openLightbox('G6.png')"
+                    />
+                </div>
+            </div>
+        </section>
+
+        <!-- Lightbox -->
+        <div id="lightbox" class="lightbox">
+            <div class="lightbox-content">
+                <span class="close" onclick="closeLightbox()">&times;</span>
+                <span class="prev" onclick="changeSlide(-1)">&#10094;</span>
+                <img id="lightbox-img" class="lightbox-img" src="" />
+                <span class="next" onclick="changeSlide(1)">&#10095;</span>
+            </div>
+        </div>
+
+        <!-- About Section -->
+        <section
+            id="about"
+            class="py-20 px-6 container mx-auto"
+            style="background-color: var(--light-bg); color: var(--dark-text)"
+        >
+            <div class="flex flex-col md:flex-row items-center">
+                <div class="md:w-1/3 flex justify-center mb-10 md:mb-0">
+                    <div
+                        class="profile-circle w-64 h-64 rounded-full overflow-hidden"
+                    >
+                        <img
+                            src="logo.png"
+                            alt="Grandadare logo"
+                            class="w-full h-full object-cover about-logo"
+                        />
+                    </div>
+                </div>
+                <div class="md:w-2/3 md:pl-16">
+                    <h2 class="text-4xl font-bold mb-8 text-primary">
+                        ABOUT GRANDADARE
+                    </h2>
+                    <h3 class="text-2xl mb-6 text-secondary">
+                        HEARTFELT PHOTOGRAPHY & CUSTOM GRAPHICS
+                    </h3>
+                    <p class="mb-6 leading-relaxed">
+                        We're excited to collaborate with you! Welcome to
+                        Grandadare, where heartfelt photography meets Southern
+                        charm. We are proudly located in Southeast Texas,
+                        serving clients across the Golden Triangle & United
+                        States.
+                    </p>
+                    <p class="mb-6 leading-relaxed">
+                        At Grandadare, we're not just photographers...we're
+                        memory-makers. We pour our passion into every image and
+                        graphic project. We love what we do and guarantee to not
+                        only meet but exceed your expectations. Your
+                        satisfaction is our priority.
+                    </p>
+                    <p class="mb-6 leading-relaxed">
+                        Each session is tailor-made to suit your unique needs,
+                        ensuring a personalized experience. Are you ready to
+                        capture the essence of your senior year? Grandadare
+                        photography specializes in creating timeless senior
+                        portraits that reflect genuine emotions and
+                        unforgettable moments. Because while memories may fade,
+                        our photos will stand the test of time.
+                    </p>
+                    <div class="grid grid-cols-2 gap-4 mt-8">
+                        <div>
+                            <h4 class="text-secondary text-lg mb-2">
+                                Specialties
+                            </h4>
+                            <ul class="text-light-text">
+                                <li class="mb-1">• Landscape Photography</li>
+                                <li class="mb-1">
+                                    • Natural Light Portraiture
+                                </li>
+                                <li class="mb-1">• Drone & Aerial Shots</li>
+                                <li class="mb-1">• Event & Wedding</li>
+                            </ul>
+                        </div>
+                        <div>
+                            <h4 class="text-primary text-lg mb-2">Equipment</h4>
+                            <ul class="text-light-text">
+                                <li class="mb-1">• Sony A7R IV</li>
+                                <li class="mb-1">• DJI Mavic 3</li>
+                                <li class="mb-1">• Canon L-Series Lenses</li>
+                                <li class="mb-1">• Natural Reflectors</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Testimonials -->
+        <section id="testimonials" class="py-20 px-6 bg-black bg-opacity-50">
+            <div class="container mx-auto">
+                <h2 class="text-4xl font-bold mb-16 text-center text-secondary">
+                    CLIENT TESTIMONIALS
+                </h2>
+                <div class="grid md:grid-cols-3 gap-10">
+                    <!-- Testimonial 1 -->
+                    <div class="testimonial-card p-8 rounded-lg">
+                        <div class="flex items-center mb-4">
+                            <img
+                                src="grand1.jpg"
+                                alt="Rachel Brown"
+                                class="w-16 h-16 rounded-full object-cover mr-4"
+                            />
+                            <div>
+                                <h4 class="text-primary text-xl">
+                                    Rachel Brown
+                                </h4>
+                                <p class="text-gray-400">Engagement Session</p>
+                            </div>
+                        </div>
+                        <div class="flex mb-4">
+                            <span class="star">★</span
+                            ><span class="star">★</span
+                            ><span class="star">★</span
+                            ><span class="star">★</span
+                            ><span class="star">★</span>
+                        </div>
+                        <p class="italic">
+                            "Dee was absolutely amazing to work with! She
+                            handled every detail from locations to poses, and we
+                            ended with images and memories to last a lifetime."
+                        </p>
+                    </div>
+                    <!-- Testimonial 2 -->
+                    <div class="testimonial-card p-8 rounded-lg">
+                        <div class="flex items-center mb-4">
+                            <img
+                                src="grand2.jpg"
+                                alt="Toni Blivens"
+                                class="w-16 h-16 rounded-full object-cover mr-4"
+                            />
+                            <div>
+                                <h4 class="text-secondary text-xl">
+                                    Toni Blivens
+                                </h4>
+                                <p class="text-gray-400">Senior Portraits</p>
+                            </div>
+                        </div>
+                        <div class="flex mb-4">
+                            <span class="star">★</span
+                            ><span class="star">★</span
+                            ><span class="star">★</span
+                            ><span class="star">★</span
+                            ><span class="star">★</span>
+                        </div>
+                        <p class="italic">
+                            "My son is graduating this year and usually hates
+                            photos, but by the end of the session we bought
+                            every single shot. Keisha is the best -
+                            professional, patient, and so talented."
+                        </p>
+                    </div>
+                    <!-- Testimonial 3 -->
+                    <div class="testimonial-card p-8 rounded-lg">
+                        <div class="flex items-center mb-4">
+                            <img
+                                src="G8.png"
+                                alt="Vikki G"
+                                class="w-16 h-16 rounded-full object-cover mr-4"
+                            />
+                            <div>
+                                <h4 class="text-primary text-xl">Vikki G</h4>
+                                <p class="text-gray-400">Family Portraits</p>
+                            </div>
+                        </div>
+                        <div class="flex mb-4">
+                            <span class="star">★</span
+                            ><span class="star">★</span
+                            ><span class="star">★</span
+                            ><span class="star">★</span
+                            ><span class="star">★</span>
+                        </div>
+                        <p class="italic">
+                            "Dee is wonderful to work with. She was patient with
+                            my little one, kept the shoot fun, and delivered
+                            photos we absolutely love."
+                        </p>
+                    </div>
+                </div>
+                <div class="text-center mt-10">
+                    <a
+                        href="https://www.google.com/search?sca_esv=eb6537429eff7540&hl=en-US&sxsrf=AE3TifNzUZF3hjBWxZaCeDNvXjINWqLG9g:1759594567583&si=AMgyJEtREmoPL4P1I5IDCfuA8gybfVI2d5Uj7QMwYCZHKDZ-E3QC5xY2vVcEJFdXbwTUil1qimxcx0d8bvjB80AwAConqi7Eo7_NoiaVcIvl-Ds_E6HTEggl_RboyuMWSmr7ywWd3MHAp-O0BdpR-E_M78U41GqTM2Izqb8SMjOjzlAyNAbaGEEiUJcPuxmu-9es6ncHj23O&q=Grandadare+Portrait+Photography+%26+Graphic+Design+Reviews&sa=X&ved=2ahUKEwjr6pjJ-IqQAxWWmSYFHcnEHKUQ0bkNegQIIBAE&biw=1850&bih=966&dpr=1"
+                        target="_blank"
+                        rel="noopener"
+                        class="text-primary underline"
+                        >Read more Google reviews -></a
+                    >
+                </div>
+            </div>
+        </section>
+
+        <!-- Pricing Section -->
+        <section
+            id="pricing"
+            class="py-20 px-6 container mx-auto"
+            style="background-color: var(--dark-bg); color: var(--light-text)"
+        >
+            <h2 class="text-4xl font-bold mb-16 text-center text-primary">
+                PRICING
+            </h2>
+
+            <!-- Session Packages with Prints -->
+            <div class="mb-16">
+                <h3 class="text-3xl font-bold mb-8 text-center text-secondary">
+                    Session Packages with Prints
+                </h3>
+                <div class="grid md:grid-cols-3 gap-10">
+                    <!-- Collection 1 -->
+                    <div class="testimonial-card p-8 rounded-lg text-center">
+                        <h4 class="text-primary text-2xl font-bold">
+                            Collection 1
+                        </h4>
+                        <p class="text-4xl font-bold my-4">1495</p>
+                        <ul class="text-left mb-6">
+                            <li>Style & Shoot Consultation</li>
+                            <li>Up to 120 min Session</li>
+                            <li>3-4 Locations</li>
+                            <li>Unlimited Outfits</li>
+                            <li>Same Day- Full HD Digital Gallery</li>
+                            <li>Minimum of 200 Photos</li>
+                            <li>15 Downloadable</li>
+                            <li>Photos Professionally Retouched</li>
+                            <li>(15) 5x7, (15) 8x10 Art Prints</li>
+                            <li>(3) 11x14 Canvas Prints</li>
+                            <li>(1) 16x20 Canvas Print</li>
+                        </ul>
+                        <a
+                            href="booking.html"
+                            class="submit-btn font-bold inline-block text-center"
+                            >BOOK NOW</a
+                        >
+                    </div>
+                    <!-- Collection 2 -->
+                    <div class="testimonial-card p-8 rounded-lg text-center">
+                        <h4 class="text-primary text-2xl font-bold">
+                            Collection 2
+                        </h4>
+                        <p class="text-4xl font-bold my-4">895</p>
+                        <ul class="text-left mb-6">
+                            <li>Style & Shoot Consultation</li>
+                            <li>up to 60 min Session</li>
+                            <li>2-3 Locations</li>
+                            <li>up to Three Outfits</li>
+                            <li>Same Day- Full HD Digital Gallery</li>
+                            <li>Minimum of 100 Photos</li>
+                            <li>8 Downloadable</li>
+                            <li>Photos Professionally Retouched</li>
+                            <li>(8) 8x10 Art Prints</li>
+                            <li>(1) 11x14 Canvas Prints</li>
+                        </ul>
+                        <a
+                            href="booking.html"
+                            class="submit-btn font-bold inline-block text-center"
+                            >BOOK NOW</a
+                        >
+                    </div>
+                    <!-- Collection 3 -->
+                    <div class="testimonial-card p-8 rounded-lg text-center">
+                        <h4 class="text-primary text-2xl font-bold">
+                            Collection 3
+                        </h4>
+                        <p class="text-4xl font-bold my-4">595</p>
+                        <ul class="text-left mb-6">
+                            <li>Style & Shoot Consultation</li>
+                            <li>45 min Session</li>
+                            <li>1- Location</li>
+                            <li>Same Day- Full HD Digital Gallery</li>
+                            <li>Minimum of 75 Photos</li>
+                            <li>4 Downloadable</li>
+                            <li>Photos Professionally Retouched</li>
+                            <li>(4) 5x7 Art Prints</li>
+                        </ul>
+                        <a
+                            href="booking.html"
+                            class="submit-btn font-bold inline-block text-center"
+                            >BOOK NOW</a
+                        >
+                    </div>
+                </div>
+            </div>
+
+            <!-- Digital Only Packages -->
+            <div>
+                <h3 class="text-3xl font-bold mb-8 text-center text-secondary">
+                    Digital Only Packages
+                </h3>
+                <div class="grid md:grid-cols-3 gap-10">
+                    <!-- Platinum -->
+                    <div class="testimonial-card p-8 rounded-lg text-center">
+                        <h4 class="text-primary text-2xl font-bold">
+                            Platinum
+                        </h4>
+                        <p class="text-4xl font-bold my-4">725</p>
+                        <ul class="text-left mb-6">
+                            <li>Style Consultation</li>
+                            <li>Up to 90 min Session</li>
+                            <li>3-4 Locations</li>
+                            <li>Same Day- Full HD Digital Gallery</li>
+                            <li>Minimum of 150 Photos</li>
+                            <li>12 Downloadable</li>
+                            <li>Photos Professionally Retouched</li>
+                        </ul>
+                        <a
+                            href="booking.html"
+                            class="submit-btn font-bold inline-block text-center"
+                            >BOOK NOW</a
+                        >
+                    </div>
+                    <!-- Gold -->
+                    <div class="testimonial-card p-8 rounded-lg text-center">
+                        <h4 class="text-primary text-2xl font-bold">Gold</h4>
+                        <p class="text-4xl font-bold my-4">475</p>
+                        <ul class="text-left mb-6">
+                            <li>Style Consultation</li>
+                            <li>up to 60 min Session</li>
+                            <li>2-3 Locations</li>
+                            <li>Same Day- Full HD Digital Gallery</li>
+                            <li>Minimum of 100 Photos</li>
+                            <li>7 Downloadable</li>
+                            <li>Photos Professionally Retouched</li>
+                        </ul>
+                        <a
+                            href="booking.html"
+                            class="submit-btn font-bold inline-block text-center"
+                            >BOOK NOW</a
+                        >
+                    </div>
+                    <!-- Silver -->
+                    <div class_="testimonial-card p-8 rounded-lg text-center">
+                        <h4 class="text-primary text-2xl font-bold">Silver</h4>
+                        <p class="text-4xl font-bold my-4">295</p>
+                        <ul class="text-left mb-6">
+                            <li>Style Consultation</li>
+                            <li>30 min Session</li>
+                            <li>1 Location</li>
+                            <li>Same Day- Full HD Digital Gallery</li>
+                            <li>Minimum of 50 Photos</li>
+                            <li>3 Downloadable</li>
+                            <li>Photos Professionally Retouched</li>
+                        </ul>
+                        <a
+                            href="booking.html"
+                            class="submit-btn font-bold inline-block text-center"
+                            >BOOK NOW</a
+                        >
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Contact Section -->
+        <section
+            id="contact"
+            class="py-20 px-6 container mx-auto"
+            style="background-color: var(--light-bg); color: var(--dark-text)"
+        >
+            <h2 class="text-4xl font-bold mb-16 text-center text-primary">
+                GET IN TOUCH
+            </h2>
+            <div class="flex flex-col md:flex-row">
+                <div class="md:w-1/2 mb-10 md:mb-0 md:pr-10">
+                    <h3 class="text-2xl mb-6 text-secondary">
+                        CONTACT INFORMATION
+                    </h3>
+                    <p class="mb-8 leading-relaxed">
+                        Interested in a landscape print, a portrait session, or
+                        capturing a special event? I'd love to hear from you.
+                        Let's discuss how we can create beautiful, lasting
+                        images together.
+                    </p>
+                    <div class="mb-6">
+                        <h4 class="text-primary text-lg mb-2">Email</h4>
+                        <p>grandadare@gmail.com</p>
+                    </div>
+                    <div class="mb-6">
+                        <h4 class="text-secondary text-lg mb-2">Studio</h4>
+                        <p>By appointment</p>
+                        <p>Beaumont, Texas</p>
+                    </div>
+                    <div class="mb-8">
+                        <a
+                            href="booking.html"
+                            class="submit-btn font-bold inline-block text-center"
+                            >BOOK NOW</a
+                        >
+                    </div>
+                    <div class="flex mt-10">
+                        <a href="#" class="social-icon instagram"
+                            ><i class="fab fa-instagram"></i
+                        ></a>
+                        <a href="#" class="social-icon facebook"
+                            ><i class="fab fa-facebook-f"></i
+                        ></a>
+                        <a href="#" class="social-icon linkedin"
+                            ><i class="fab fa-linkedin-in"></i
+                        ></a>
+                    </div>
+                </div>
+                <div class="md:w-1/2">
+                    <form class="border-secondary p-8 rounded-lg">
+                        <div class="mb-6">
+                            <input
+                                type="text"
+                                class="input-field"
+                                placeholder="Your Name"
+                                required
+                            />
+                        </div>
+                        <div class="mb-6">
+                            <input
+                                type="email"
+                                class="input-field"
+                                placeholder="Your Email"
+                                required
+                            />
+                        </div>
+                        <div class="mb-6">
+                            <select class="input-field">
+                                <option value="" disabled selected>
+                                    Inquiry Type
+                                </option>
+                                <option value="commercial">Commercial</option>
+                                <option value="event">Event / Wedding</option>
+                                <option value="portrait">
+                                    Portrait Session
+                                </option>
+                                <option value="print">Print Purchase</option>
+                                <option value="other">Other</option>
+                            </select>
+                        </div>
+                        <div class="mb-6">
+                            <textarea
+                                class="input-field"
+                                rows="4"
+                                placeholder="Your Message"
+                                required
+                            ></textarea>
+                        </div>
+                        <button type="submit" class="submit-btn font-bold">
+                            SEND MESSAGE
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </section>
+
+        <!-- Footer -->
+        <footer class="py-10 bg-black text-center">
+            <div class="container mx-auto px-6">
+                <p class="text-white mb-4">
+                    © 2025 Grandadare PHOTOGRAPHY. ALL RIGHTS RESERVED.
+                </p>
+                <p class="text-gray-500 text-sm">
+                    CRAFTED WITH A LOVE FOR THE NATURAL WORLD
+                </p>
+            </div>
+        </footer>
+
+        <script>
+            // Mobile Menu Toggle
+            const menuBtn = document.getElementById("menu-btn");
+            const mobileMenu = document.getElementById("mobile-menu");
+            menuBtn.addEventListener("click", () => {
+                mobileMenu.classList.toggle("hidden");
             });
-        });
 
-        // Slider
-        let currentSlide = 0;
-        const slides = document.querySelectorAll('.slide');
-        function showSlide(n) {
-            slides.forEach(slide => slide.classList.remove('active'));
-            currentSlide = (n + slides.length) % slides.length;
-            slides[currentSlide].classList.add('active');
-        }
-        function nextSlide() {
-            showSlide(currentSlide + 1);
-        }
-        // Auto slide change every 5 seconds
-        setInterval(nextSlide, 5000);
+            // Smooth scrolling for navigation links
+            document.querySelectorAll('a[href^="#"]').forEach((anchor) => {
+                anchor.addEventListener("click", function (e) {
+                    e.preventDefault();
+                    const target = document.querySelector(
+                        this.getAttribute("href"),
+                    );
+                    if (target) {
+                        target.scrollIntoView({ behavior: "smooth" });
+                    }
+                    // Close mobile menu if open
+                    mobileMenu.classList.add("hidden");
+                });
+            });
 
-        // Lightbox functionality
-        const lightbox = document.getElementById('lightbox');
-        const lightboxImg = document.getElementById('lightbox-img');
-        const galleryItems = document.querySelectorAll('.masonry-item img');
-        const imageSources = Array.from(galleryItems).map(img => img.getAttribute('onclick').match(/'([^']+)'/)[1]);
-        let currentImageIndex = 0;
-
-        function openLightbox(src) {
-            currentImageIndex = imageSources.findIndex(imgSrc => imgSrc === src);
-            lightboxImg.src = src;
-            lightbox.style.display = 'flex';
-            document.body.style.overflow = 'hidden';
-        }
-
-        function closeLightbox() {
-            lightbox.style.display = 'none';
-            document.body.style.overflow = 'auto';
-        }
-
-        function changeSlide(n) {
-            currentImageIndex = (currentImageIndex + n + imageSources.length) % imageSources.length;
-            lightboxImg.src = imageSources[currentImageIndex];
-        }
-
-        // Close lightbox when clicking outside the image
-        lightbox.addEventListener('click', function(e) {
-            if (e.target === lightbox) {
-                closeLightbox();
+            // Slider
+            let currentSlide = 0;
+            const slides = document.querySelectorAll(".slide");
+            function showSlide(n) {
+                slides.forEach((slide) => slide.classList.remove("active"));
+                currentSlide = (n + slides.length) % slides.length;
+                slides[currentSlide].classList.add("active");
             }
-        });
+            function nextSlide() {
+                showSlide(currentSlide + 1);
+            }
+            // Auto slide change every 5 seconds
+            setInterval(nextSlide, 5000);
 
-        // Keyboard navigation for lightbox
-        document.addEventListener('keydown', function(e) {
-            if (lightbox.style.display === 'flex') {
-                if (e.key === 'Escape') {
+            // Lightbox functionality
+            const lightbox = document.getElementById("lightbox");
+            const lightboxImg = document.getElementById("lightbox-img");
+            const galleryItems = document.querySelectorAll(".masonry-item img");
+            const imageSources = Array.from(galleryItems).map(
+                (img) => img.getAttribute("onclick").match(/'([^']+)'/)[1],
+            );
+            let currentImageIndex = 0;
+
+            function openLightbox(src) {
+                currentImageIndex = imageSources.findIndex(
+                    (imgSrc) => imgSrc === src,
+                );
+                lightboxImg.src = src;
+                lightbox.style.display = "flex";
+                document.body.style.overflow = "hidden";
+            }
+
+            function closeLightbox() {
+                lightbox.style.display = "none";
+                document.body.style.overflow = "auto";
+            }
+
+            function changeSlide(n) {
+                currentImageIndex =
+                    (currentImageIndex + n + imageSources.length) %
+                    imageSources.length;
+                lightboxImg.src = imageSources[currentImageIndex];
+            }
+
+            // Close lightbox when clicking outside the image
+            lightbox.addEventListener("click", function (e) {
+                if (e.target === lightbox) {
                     closeLightbox();
-                } else if (e.key === 'ArrowLeft') {
-                    changeSlide(-1);
-                } else if (e.key === 'ArrowRight') {
-                    changeSlide(1);
                 }
-            }
-        });
-    </script>
-</body>
+            });
+
+            // Keyboard navigation for lightbox
+            document.addEventListener("keydown", function (e) {
+                if (lightbox.style.display === "flex") {
+                    if (e.key === "Escape") {
+                        closeLightbox();
+                    } else if (e.key === "ArrowLeft") {
+                        changeSlide(-1);
+                    } else if (e.key === "ArrowRight") {
+                        changeSlide(1);
+                    }
+                }
+            });
+        </script>
+    </body>
 </html>
